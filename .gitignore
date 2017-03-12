@@ -1,0 +1,5 @@
+# Config file
+constants.php
+database.php
+#vendor
+vendor
