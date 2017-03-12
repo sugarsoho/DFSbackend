@@ -70,6 +70,16 @@ class Product extends Admin_Controller {
 	    }
 	}
 
+	
+	
+	/**
+	 * 返回商品列表
+	 */
+	public function product_list(){
+	    $data=$this-> product -> get_all_product();
+	    echo json_encode($data);
+	}
+
 	/**
 	 * 测试接口
 	 */

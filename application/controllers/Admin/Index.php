@@ -33,52 +33,7 @@ class Index extends Admin_Controller {
 	    $this-> parser ->parse('index.html',$admin_info);
 	}
 
-	
-	/**
-	 * 返回商品列表
-	 */
-	public function product_list(){
-		$shop_id=$this-> input -> get('shop_id');
-	    $data=$this-> product -> get_all_product($shop_id);
-	    echo json_encode($data);
-	}
 
-	/**
-	 * 返回订单列表
-	 */
-	public function order_list(){
-	    $uid=$this-> user -> getuid();
-        $userinfo=$this-> user -> get($uid);
-	    $data=$this -> order -> get_all_order($userinfo['openId']);
-	    foreach ($data as $key => $value) {
-	    	$order_list[$key]['order']=$value;
-	    	$order_list[$key]['product']=$this -> product -> get_product_info($value['product_id']);
-	    	$order_list[$key]['shop']=$this -> shop -> get_shop_info($value['shop_id']);
-	    }
-	    echo json_encode($order_list);
-	}
-
-	/**
-	 * 返回商品详情
-	 */
-	public function product_info(){
-	    $product_id=$this-> input -> get('product_id');
-	    $data=$this-> product -> get_product_info($product_id);
-	    $shop_id=$data['shop_id'];
-	    $data['shop']=$this-> shop -> get_shop_info($shop_id);
-	    echo json_encode($data);
-	}
-
-	/**
-	 * 返回订单详情
-	 */
-	public function order_info(){
-	    $order_id=$this-> input -> get('order_id');
-	    $data=$this -> order -> get_order_info($order_id);
-	    $data['product']=$this-> product -> get_product_info($data['product_id']);
-	    $data['shop']=$this-> shop -> get_shop_info($data['shop_id']);
-	    echo json_encode($data);
-	}
 
 	/**
 	 * 测试接口

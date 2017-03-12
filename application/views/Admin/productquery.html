@@ -35,6 +35,7 @@
 				<th width="40">ID</th>
 				<th width="100">产品名称</th>
 				<th>产品说明</th>
+				<th>SKU ID</th>
 				<th width="150">产品细节</th>
 				<th width="60">产品类别</th>
 				<th width="60">所属商铺</th>
@@ -55,7 +56,7 @@
 $(document).ready(function(){
 	$('.table-sort').DataTable({
 		ajax:{
-			url:'http://139.199.170.78/Admin/Index/getProductList',
+			url:'https://15580083.qcloud.la/Admin/index/product_list',
 			tpye:"GET",
 			dataSrc:'data'
 		},

@@ -7,10 +7,14 @@ class Product_model extends CI_Model {
 	/**
 	 * 获取所有商品的数据
 	 */
-	public function get_all_product($class_name){
-	    $data=$this -> db
+	public function get_all_product($class_name=''){
+		if($class_name!='')
+	    {
+	    	$data=$this -> db
 	    		-> where('class_name',$class_name)
 	    		-> get('product');
+	    }
+	    else $data=$this-> db ->get('product');
 	    return $data->result();
 	}
 
