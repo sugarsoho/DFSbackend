@@ -2,4 +2,7 @@
 constants.php
 database.php
 #vendor
-vendor
+/vendor/*
+#log
+.log
+/logs/*
