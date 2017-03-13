@@ -10,6 +10,13 @@ class Order extends Admin_Controller {
 	}
 
 	/**
+	 * 登录页面
+	 */
+	public function orderquery(){
+	    $this-> load ->view('orderquery.html');
+	}
+
+	/**
 	 * 测试接口
 	 */
 	public function test(){

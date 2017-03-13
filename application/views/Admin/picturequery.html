@@ -23,19 +23,23 @@
 <script type="text/javascript" src="/Public/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
+<style type="text/css">
+.preview
+{ width:200px;}
+</style>
 <title>图片列表</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 图片管理 <span class="c-gray en">&gt;</span> 图片列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a href="javascript:;" onclick="picture_add('添加图片','https://15580083.qcloud.la/Admin/index/pictureadd')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加图片</a></span></div>
-	<table class="table table-border table-bordered table-bg table-hover table-sort">
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a href="javascript:;" onclick="picture_add('添加图片','https://15580083.qcloud.la/Admin/resource/pictureadd')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加图片</a></span></div>
+	<table id="example" class="table table-border table-bordered table-bg table-hover table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="60">ID</th>
 				<th width="100">图片名称</th>
 				<th>图片url</th>
-				<th width="120">图片预览</th>
+				<th width="180">图片预览</th>
 			</tr>
 		</thead>
 	</table>
@@ -47,25 +51,31 @@
 <script type="text/javascript" src="/Public/statics/h-ui.admin/js/H-ui.admin.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$('.table-sort').DataTable({
-		ajax:{
-			url:'http://139.199.170.78/Admin/Index/getProductList',
-			tpye:"GET",
-			dataSrc:'data'
-		},
-		columns: [
-			{"data":"id"},
-			{"data":"name"},
-			{"data":"url"},
-			{"data":'preview'}
-		],
-        "aaSorting": [[ 0, "desc" ]],//默认第几个排序
-		"bStateSave": true,//状态保存
-		"aoColumnDefs": [
-	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-	  {"orderable":false,"aTargets":[1,2,3]}// 不参与排序的列
-	]
-	});
+	$.ajax({
+		url: 'https://15580083.qcloud.la/Admin/resource/picture_list',
+		method: 'GET',
+		success: function(data) {
+			$('#example').DataTable({
+				data: JSON.parse(data),
+				columns: [
+					{"data":"id"},
+					{"data":"key"},
+					{"data":"url"}
+				],
+				columnDefs: [{
+					targets: 2,
+					render: function(data, type, row, meta) {
+		            	return 'https://om536p71r.qnssl.com/'+ row.key;
+		            }
+		    	},{
+					targets: 3,
+		        	render: function(data, type, row, meta) {
+		            	return '<img width="150" src="https://om536p71r.qnssl.com/'+ row.key +'" >';
+		        	}
+		    	}]
+			})
+		}
+	})
 });
 /*图片-添加*/
 function picture_add(title,url){
@@ -77,30 +87,6 @@ function picture_add(title,url){
 	layer.full(index);
 }
 
-function del(x) {
-        var msg = "您真的确定要删除吗？\n\n请确认！";
-        if (confirm(msg)==true) {
-            $.ajax({
-            	url:"http://139.199.170.78/Admin/Index/deleteProduct",
-            	type:"GET",
-            	data:{picture_id:x},
-            	success:function(res){
-            		if(res.msg=='fail'){
-            			alert(res);
-            		}
-            		else{
-            			window.location.reload();
-            		}
-            	},
-            	error:function(){
-            		alert("删除失败");
-            	}
-            });
-        }
-        else {
-            return false;
-        }
-    }
 </script>
 </body>
 </html>

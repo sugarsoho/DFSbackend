@@ -3,6 +3,23 @@ use \QCloud_WeApp_SDK\Auth\LoginService as LoginService;
 
 class User_model extends CI_Model {
 
+
+    /**
+     * 获取用户列表
+     */
+    public function get_all_user($map=''){
+        if($map!='')
+        {
+            $data=$this -> db
+                -> where($map)
+                -> get('user');
+        }
+        else $data=$this-> db ->get('user');
+        return $data->result();
+        $this->display();
+    }
+
+
     //获取当前微信用户的uid
     public function getuid()
     {

@@ -27,24 +27,24 @@
 		width: 100px;
 	}
 </style>
-<title>全部订单</title>
+<title>全部用户</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户管理 <span class="c-gray en">&gt;</span> 全部用户 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="r">共有数据：<strong>{count}</strong> 条</span> </div>
 	<div class="mt-20">
-		<table class="table table-border table-bordered table-bg table-hover table-sort">
+		<table id="example" class="table table-border table-bordered table-bg table-hover table-sort">
 			<thead>
 				<tr class="text-c">
 					<th width="60">序号</th>
 					<th>openid</th>
 					<th width="100">昵称</th>
-					<th width="80">头像</th>
+					<th width="120">头像</th>
 					<th width="100">国家</th>
 					<th width="100">省份</th>
 					<th width="100">城市</th>
-					<th width="50">操作</th>
+					<th width="40">操作</th>
 				</tr>
 			</thead>
 		</table>
@@ -58,38 +58,48 @@
 <script type="text/javascript" src="/Public/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$('.table-sort').DataTable({
-		ajax:{
-			url:'http://139.199.170.78/Admin/Index/getUserList',
-			tpye:"GET",
-			dataSrc:'data'
-		},
-		columns: [
-			{"data":"uid"},
-			{"data":"openid"},
-			{"data":"nickname"},
-			{"data":"avatarUrl"},
-			{"data":"country"},
-			{"data":"province"},
-			{"data":"city"},
-			{"data":"admin"}
-		],
-        "aaSorting": [[ 0, "desc" ]],//默认第几个排序
-		"bStateSave": true,//状态保存
-		"aoColumnDefs": [
-	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-	  {"orderable":false,"aTargets":[1,2,3,7]}// 不参与排序的列
-	]
-	});
+	$.ajax({
+		url: 'https://15580083.qcloud.la/Admin/user/user_list',
+		method: 'GET',
+		success: function(data) {
+			$('#example').DataTable({
+				data: JSON.parse(data),
+				columns: [
+									{"data":"uid"},
+									{"data":"openId"},
+									{"data":"nickname"},
+									{"data":"avatarUrl"},
+									{"data":"country"},
+									{"data":"province"},
+									{"data":"city"}
+								],
+				columnDefs: [
+				{
+		        // 指定第最后一列
+		        	targets: 7,
+		        	render: function(data, type, row, meta) {
+		            	return ' <a title="删除" onclick="del('+ row.uid +')"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>' ;
+		        	}
+		    	},
+		    	{
+		    		targets: 3,
+		    		render: function(data, type, row, meta) {
+		    		return '<img width="100" src="'+ row.avatarUrl +'" >';
+		    		}
+		    	}
+		    	]
+			})
+		}
+	})
 });
 
 function del(x) {
         var msg = "您真的确定要删除吗？\n\n请确认！";
         if (confirm(msg)==true) {
             $.ajax({
-            	url:"http://139.199.170.78/Admin/Index/deleteUser",
+            	url:"https://15580083.qcloud.la/Admin/user/delUser",
             	type:"GET",
-            	data:{id:x},
+            	data:{uid:x},
             	success:function(res){
             		if(res.msg=='fail'){
             			alert(res);

@@ -11,6 +11,22 @@ class User extends Admin_Controller {
 
 
 	/**
+	 * 登录页面
+	 */
+	public function userquery(){
+	    $this-> load ->view('userquery.html');
+	}
+
+
+	/**
+	 * 返回商品列表
+	 */
+	public function user_list(){
+	    $data=$this-> user -> get_all_user();
+	    echo json_encode($data);
+	}
+
+	/**
 	 * 测试接口
 	 */
 	public function test(){

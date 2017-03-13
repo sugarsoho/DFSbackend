@@ -15,7 +15,20 @@ class Resource_model extends CI_Model {
 	    else return true;
 	}
 
-
+	/**
+	 * get_all_picture
+	 */
+	public function get_all_picture($map=''){
+	    if($map!='')
+	    {
+	    	$data=$this -> db
+	    		-> where($map)
+	    		-> get('resource');
+	    }
+	    else $data=$this-> db ->get('resource');
+	    return $data->result();
+	    $this->display();
+	}
 
 
 }

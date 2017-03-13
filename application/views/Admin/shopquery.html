@@ -28,8 +28,8 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商铺管理 <span class="c-gray en">&gt;</span> 商铺列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a href="javascript:;" onclick="shop_add('添加商铺','https://15580083.qcloud.la/Admin/index/shopadd')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加商铺</a></span></div>
-	<table class="table table-border table-bordered table-bg table-hover table-sort">
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a href="javascript:;" onclick="shop_add('添加商铺','https://15580083.qcloud.la/Admin/shop/shopadd')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加商铺</a></span></div>
+	<table id="example" class="table table-border table-bordered table-bg table-hover table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="60">ID</th>
@@ -38,8 +38,8 @@
 				<th width="80">所属地</th>
 				<th>详细地址</th>
 				<th width="90">联系电话</th>
-				<th width="60">商品种类</th>
-				<th width="100">操作</th>
+				<!-- <th width="60">商品种类</th> -->
+				<th width="50">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -51,29 +51,31 @@
 <script type="text/javascript" src="/Public/statics/h-ui.admin/js/H-ui.admin.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$('.table-sort').DataTable({
-		ajax:{
-			url:'http://139.199.170.78/Admin/Index/getProductList',
-			tpye:"GET",
-			dataSrc:'data'
-		},
-		columns: [
-			{"data":"id"},
-			{"data":"name"},
-			{"data":"city"},
-			{"data":"area"},
-			{"data":"address"},
-			{"data":"contact_phone"},
-			{"data":"class"},
-			{"data":"admin"}
-		],
-        "aaSorting": [[ 0, "desc" ]],//默认第几个排序
-		"bStateSave": true,//状态保存
-		"aoColumnDefs": [
-	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-	  {"orderable":false,"aTargets":[1,2,3,4,5,6,7]}// 不参与排序的列
-	]
-	});
+	$.ajax({
+		url: 'https://15580083.qcloud.la/Admin/shop/shop_list',
+		method: 'GET',
+		success: function(data) {
+			$('#example').DataTable({
+				data: JSON.parse(data),
+				columns: [
+									{"data":"id"},
+									{"data":"name"},
+									{"data":"city"},
+									{"data":"area"},
+									{"data":"address"},
+									{"data":"contact_phone"}
+								],
+				columnDefs: [{
+		        // 指定第最后一列
+		        targets: 6,
+		        render: function(data, type, row, meta) {
+		            return '<a title="编辑" href="https://15580083.qcloud.la/Admin/shop/shopedit?id='+ row.id + '" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> ' +
+													' <a title="删除" onclick="del('+ row.id +')"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>' ;
+		        }
+		    }]
+			})
+		}
+	})
 });
 /*商铺-添加*/
 function shop_add(title,url){
@@ -89,9 +91,9 @@ function del(x) {
         var msg = "您真的确定要删除吗？\n\n请确认！";
         if (confirm(msg)==true) {
             $.ajax({
-            	url:"http://139.199.170.78/Admin/Index/deleteProduct",
+            	url:"https://15580083.qcloud.la/Admin/shop/delShop",
             	type:"GET",
-            	data:{shop_id:x},
+            	data:{id:x},
             	success:function(res){
             		if(res.msg=='fail'){
             			alert(res);

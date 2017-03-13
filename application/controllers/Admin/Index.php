@@ -3,6 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Index extends Admin_Controller {
 
+	/*后台管理员信息的数据结构
+	public $admin_info = array('id',
+							'admin_account',
+							'admin_password',
+							'worth',
+							'reg_time',
+							'admin_job',
+							'admin_name',
+							'admin_level',
+							'admin_status');*/
+
 	public function __construct() {
 		parent::__construct();
 		$this -> load -> model('admin_model', 'admin');
@@ -31,6 +42,72 @@ class Index extends Admin_Controller {
 			redirect('https://15580083.qcloud.la/Admin/index/login');
 		}
 	    $this-> parser ->parse('index.html',$admin_info);
+	}
+
+	/**
+	 * 添加商品
+	 */
+	public function addAdmin(){
+		$admin_info = array('admin_account',
+							'admin_password',
+							'worth',
+							'reg_time',
+							'admin_job',
+							'admin_name',
+							'admin_level');
+		$admin_info=$this-> input -> post($admin_info);
+		$admin_info['reg_time']=date("YmdHis");
+	    $data=$this-> admin -> addData($admin_info);
+	    if($data){
+	    	redirect('https://15580083.qcloud.la/Admin/index/adminquery');
+	    }
+	}
+
+	/**
+	 * 编辑商品
+	 */
+	public function editAdmin(){
+		$admin_info = array('id',
+							'admin_account',
+							'admin_password',
+							'worth',
+							'admin_job',
+							'admin_name',
+							'admin_level');
+		$admin_info=$this-> input -> post($admin_info);
+		$admin_info['reg_time']=date("YmdHis");
+	    $data=$this-> admin -> editData($admin_info);
+	    if($data){
+	    	redirect('https://15580083.qcloud.la/Admin/index/adminquery');
+	    }
+	}
+
+	/**
+	 * 删除商品 需传入主键id
+	 */
+	public function delAdmin(){
+	    $map['id']=$this->input->get('id');
+	    $result=$this-> admin -> delData($map);
+	    $this->display();
+	}
+
+
+	
+	/**
+	 * 返回商品列表
+	 */
+	public function admin_list(){
+	    $data=$this-> admin -> get_all_admin();
+	    echo json_encode($data);
+	}
+
+	/**
+	 * 获取商品详情
+	 */
+	public function admin_info(){
+		$map['id']=$this -> input -> get('id');
+	    $data=$this-> admin ->get_admin_info($map);
+	    echo json_encode($data);
 	}
 
 
@@ -71,77 +148,7 @@ class Index extends Admin_Controller {
 	public function adminedit(){
 	    $this-> load ->view('adminedit.html');
 	}
-
-	/**
-	 * 登录页面
-	 */
-	public function orderquery(){
-	    $this-> load ->view('orderquery.html');
-	}
-
-	/**
-	 * 登录页面
-	 */
-	public function picturequery(){
-	    $this-> load ->view('picturequery.html');
-	}
-
-	/**
-	 * 登录页面
-	 */
-	public function pictureadd(){
-	    $this-> load ->view('pictureadd.html');
-	}
-
-	/**
-	 * 登录页面
-	 */
-	public function productquery(){
-	    $this-> load ->view('productquery.html');
-	}
-
-	/**
-	 * 登录页面
-	 */
-	public function productadd(){
-	    $this-> load ->view('productadd.html');
-	}
-
-	/**
-	 * 登录页面
-	 */
-	public function productedit(){
-	    $this-> load ->view('productedit.html');
-	}
-
-
-	/**
-	 * 登录页面
-	 */
-	public function shopquery(){
-	    $this-> load ->view('shopquery.html');
-	}
-
-	/**
-	 * 登录页面
-	 */
-	public function shopadd(){
-	    $this-> load ->view('shopadd.html');
-	}
-
-	/**
-	 * 登录页面
-	 */
-	public function shopedit(){
-	    $this-> load ->view('shopedit.html');
-	}
-
-	/**
-	 * 登录页面
-	 */
-	public function userquery(){
-	    $this-> load ->view('userquery.html');
-	}
+	
 
 	/**
 	 * 登录页面

@@ -27,8 +27,8 @@ class Weapp extends CI_Controller {
 	 * 返回商品列表
 	 */
 	public function product_list(){
-		$class_name=$this-> input -> get('class_name');
-	    $data=$this-> product -> get_all_product($class_name);
+		$map['class_name']=$this-> input -> get('class_name');
+	    $data=$this-> product -> get_all_product($map);
 	    echo json_encode($data);
 	}
 
@@ -87,10 +87,13 @@ class Weapp extends CI_Controller {
 	 * 返回商品详情
 	 */
 	public function product_info(){
-	    $product_id=$this-> input -> get('product_id');
-	    $data=$this-> product -> get_product_info($product_id);
-	    $shop_id=$data['shop_id'];
-	    $data['shop']=$this-> shop -> get_shop_info($shop_id);
+	    $map['id']=$this-> input -> get('product_id');
+	    $data=$this-> product -> get_product_info($map);
+	    $data['banner_image_urls']=explode('|', $data['banner_image_urls']);
+	    $data['detail']=explode('|', $data['detail']);
+	    $map2['id']=$data['shop_id'];
+	    $data['shop']=$this-> shop -> get_shop_info($map2);
+	    $data['shop']['carousels']=explode('|', $data['shop']['carousels']);
 	    echo json_encode($data);
 	}
 

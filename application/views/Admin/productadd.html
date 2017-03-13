@@ -37,6 +37,12 @@
 			</div>
 		</div>
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>产品类别（输入类别名称）：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="class_name" name="class_name">
+			</div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>售价（单位:元)：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="" id="price" name="price">
@@ -46,6 +52,12 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>原价（单位:元)：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="" id="worth" name="worth">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>SKU ID：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="SKU_ID" name="SKU_ID">
 			</div>
 		</div>
 		<div class="row cl">
@@ -119,6 +131,9 @@ $(function(){
 				required:true,
 				minlength:1,
 				maxlength:16
+			},
+			SKU_ID:{
+				required:true
 			},
 			price:{
 				required:true,

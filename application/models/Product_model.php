@@ -7,11 +7,11 @@ class Product_model extends CI_Model {
 	/**
 	 * 获取所有商品的数据
 	 */
-	public function get_all_product($class_name=''){
-		if($class_name!='')
+	public function get_all_product($map=''){
+		if($map!='')
 	    {
 	    	$data=$this -> db
-	    		-> where('class_name',$class_name)
+	    		-> where($map)
 	    		-> get('product');
 	    }
 	    else $data=$this-> db ->get('product');
@@ -21,13 +21,11 @@ class Product_model extends CI_Model {
 	/**
 	 * 获取单个商品详情
 	 */
-	public function get_product_info($product_id){
+	public function get_product_info($map){
 	    $data=$this -> db
-	    		-> where('id' , $product_id)
+	    		-> where($map)
 	    		-> get('product');
 	    $product=$data->row_array();
-	    $product['banner_image_urls']=explode('|', $product['banner_image_urls']);
-	    $product['detail']=explode('|', $product['detail']);
 	    return $product;
 	}
 
@@ -39,10 +37,18 @@ class Product_model extends CI_Model {
 	}
 
 	/**
-	 * 编辑数据
+	 * 编辑数据,$data必须含有主键
 	 */
 	public function editData($data){
 	    return $result=$this -> db ->replace('product',$data);
+	}
+
+	/**
+	 * 删除数据
+	 */
+	public function delData($map){
+	    return $result=$this -> db ->delete('product',$map);
+	    $this->display();
 	}
 
 }

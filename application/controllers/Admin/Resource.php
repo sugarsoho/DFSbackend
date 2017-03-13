@@ -37,13 +37,35 @@ class Resource extends Admin_Controller {
 	    	$picture_info=json_decode($result,true);
 	    	$error=$this -> resource -> addData($picture_info);
 	    	if($error){
-	    	echo 'success';
+	    		redirect('https://15580083.qcloud.la/Admin/resource/picturequery');
 	    	}
 	    	else {
-	    	echo 'fail';
+	    		echo 'fail';
 	    	}
 	    }
 	    
+	}
+
+	/**
+	 * 获取资源列表
+	 */
+	public function picture_list(){
+	    $data=$this-> resource -> get_all_picture();
+	    echo json_encode($data);
+	}
+
+	/**
+	 * 登录页面
+	 */
+	public function picturequery(){
+	    $this-> load ->view('picturequery.html');
+	}
+
+	/**
+	 * 登录页面
+	 */
+	public function pictureadd(){
+	    $this-> load ->view('pictureadd.html');
 	}
 
 
