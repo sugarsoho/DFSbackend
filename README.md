@@ -13,7 +13,7 @@ DFS是一个奢侈品旅游零售商。自1960年于香港成立，其免税店�
 业务服务器为nginx，服务器语言为PHP，操作系统为CentOS7.2，数据库为MySQL。应用程序使用Code Igniter框架设计，
 
 ## 开发点滴
-1. 由于是第一次使用CI框架，以往都是使用TP框架，在前后端分离方面完成的不是特别好。CI框架支持模板引擎，在初始化函数中使用$this-> library -> parser即可调用$this-> parser -> parse ('xxx.html',$data)方法。其中'xxx.html'为模板页面，$data是需要渲染的数组。
+1. 由于是第一次使用CI框架，以往都是使用TP框架，在前后端分离方面完成的不是特别好。CI框架支持模板引擎，在初始化函数中使用`$this-> library -> parser`即可调用`$this-> parser -> parse ('xxx.html',$data)`方法。其中'xxx.html'为模板页面，$data是需要渲染的数组。
 
 2. 为提高模型与控制器的解耦度，应当设置基类控制器和基类模型，将常用的CURD等操作写在基类里面。
 
@@ -40,3 +40,12 @@ DFS是一个奢侈品旅游零售商。自1960年于香港成立，其免税店�
 
 #### 修改
 - [ ] 商家信息
+
+---
+## 名片
+
+    <title> 奇点实验室 </title>
+    <name> 樊家豪 </name>
+    <job> 队长 </job>
+    <location> 中山大学电子与信息工程学院 </location>
+    <slogan> 每一点都很重要 </slogan>
