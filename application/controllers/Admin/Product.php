@@ -78,7 +78,6 @@ class Product extends Admin_Controller {
 	public function delProduct(){
 	    $map['id']=$this->input->get('id');
 	    $result=$this-> product -> delData($map);
-	    $this->display();
 	}
 
 

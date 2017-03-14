@@ -88,11 +88,8 @@ class Index extends Admin_Controller {
 	public function delAdmin(){
 	    $map['id']=$this->input->get('id');
 	    $result=$this-> admin -> delData($map);
-	    $this->display();
 	}
 
-
-	
 	/**
 	 * 返回商品列表
 	 */

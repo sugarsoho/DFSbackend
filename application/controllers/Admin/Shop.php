@@ -56,10 +56,9 @@ class Shop extends Admin_Controller {
 	/**
 	 * 删除商铺 需传入主键id
 	 */
-	public function delProduct(){
+	public function delShop(){
 	    $map['id']=$this->input->get('id');
 	    $result=$this-> shop -> delData($map);
-	    $this->display();
 	}
 
 	/**

@@ -47,7 +47,6 @@ class Category extends Admin_Controller {
 	public function delClass(){
 	    $map['class_id']=$this->input->get('class_id');
 	    $result=$this-> class -> delData($map);
-	    $this->display();
 	}
 
 	/**
