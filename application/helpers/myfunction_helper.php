@@ -26,7 +26,7 @@ function get_exchange_rate(){
     if($result){
         if($result['error_code']=='0'){
           $EXCHANGE_RATE=$result[result][1][exchange];
-          $DATE_TODAY=strtotime(date("Y-m-d");
+          $DATE_TODAY=strtotime(date("Y-m-d"));
           $fp = fopen("exchange_rate.txt", "w");
           $flag=fwrite($fp,$EXCHANGE_RATE."\r\n".$DATE_TODAY."\r\n");
           if(!$flag){
