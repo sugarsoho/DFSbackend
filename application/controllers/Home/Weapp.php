@@ -13,6 +13,7 @@ class Weapp extends CI_Controller {
 		$this -> load -> model('class_model', 'class');
 		$this -> load -> model('user_model', 'user');
 		$this -> load -> helper('url');
+		$this -> load -> helper('myfunction');
 	}
 
 	/**
@@ -27,9 +28,14 @@ class Weapp extends CI_Controller {
 	 * 返回商品列表
 	 */
 	public function product_list(){
-		$map['class_name']=$this-> input -> get('class_name');
+			$map['class_name']=$this-> input -> get('class_name');
 	    $data=$this-> product -> get_all_product($map);
-	    echo json_encode($data);
+			$exchange_rate=get_exchange_rate();
+			foreach ($data as $key => $value) {
+				$product_info[$key]=$value;
+				$product_info[$key]['RMB']=$value['price']*$exchange_rate;
+			}
+	    echo json_encode($product_info);
 	}
 
 	/**
@@ -52,34 +58,36 @@ class Weapp extends CI_Controller {
 	 */
 	public function history_order_list(){
 	    $uid=$this-> user -> getuid();
-        $userinfo=$this-> user -> get($uid);
+      $userinfo=$this-> user -> get($uid);
 	    $data=$this -> order -> get_all_order($userinfo['openId'],2);
+			$exchange_rate=get_exchange_rate();
 	    foreach ($data as $key => $value) {
 	    	$order_list[$key]['order']=$value;
 	    	$order_list[$key]['product']=$this -> product -> get_product_info($value['product_id']);
+				$order_list[$key]['product']['RMB']=$order_list[$key]['product']['price']*$exchange_rate;
 	    	$order_list[$key]['shop']=$this -> shop -> get_shop_info($value['shop_id']);
 	    }
 	    if($data){
 	    	echo json_encode($order_list);
 	    }
-	    
+
 	}
 
 	/**
 	 * 返回未完成订单列表
 	 */
 	public function unfinished_order_list(){
-	    $uid=$this-> user -> getuid();
-        $userinfo=$this-> user -> get($uid);
-	    $data=$this -> order -> get_all_order($userinfo['openId'],0);
-	    foreach ($data as $key => $value) {
+	  $uid=$this-> user -> getuid();
+    $userinfo=$this-> user -> get($uid);
+	  $data=$this -> order -> get_all_order($userinfo['openId'],0);
+	  foreach ($data as $key => $value) {
 	    	$order_list[$key]['order']=$value;
 	    	$order_list[$key]['product']=$this -> product -> get_product_info($value['product_id']);
 	    	$order_list[$key]['shop']=$this -> shop -> get_shop_info($value['shop_id']);
 	    }
-	    if($data){
-	    	echo json_encode($order_list);
-	    }
+	  if($data){
+	   echo json_encode($order_list);
+	  }
 	}
 
 
@@ -90,7 +98,6 @@ class Weapp extends CI_Controller {
 	    $map['id']=$this-> input -> get('product_id');
 	    $data=$this-> product -> get_product_info($map);
 	    $data['banner_image_urls']=explode('|', $data['banner_image_urls']);
-	    $data['detail']=explode('|', $data['detail']);
 	    $map2['id']=$data['shop_id'];
 	    $data['shop']=$this-> shop -> get_shop_info($map2);
 	    $data['shop']['carousels']=explode('|', $data['shop']['carousels']);

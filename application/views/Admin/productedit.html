@@ -44,13 +44,13 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>售价（单位:元)：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>售价（单位:$)：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="{price}" placeholder="" id="price" name="price">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>原价（单位:元)：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>原价（单位:$)：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="{worth}" placeholder="" id="worth" name="worth">
 			</div>
@@ -100,7 +100,7 @@
 				</span>
 			</div>
 		</div>
-		
+
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
@@ -109,18 +109,18 @@
 	</form>
 </article>
 
-<!--_footer 作为公共模版分离出去--> 
-<script type="text/javascript" src="/Public/lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="/Public/lib/jquery.validation/1.14.0/jquery.validate.min.js"></script> 
-<script type="text/javascript" src="/Public/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
-<script type="text/javascript" src="/Public/statics/h-ui/js/H-ui.js"></script> 
-<script type="text/javascript" src="/Public/statics/h-ui.admin/js/H-ui.admin.js"></script> 
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/Public/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/Public/lib/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/Public/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="/Public/statics/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="/Public/statics/h-ui.admin/js/H-ui.admin.js"></script>
 <!--/_footer /作为公共模版分离出去-->
 
-<!--请在下方写此页面业务相关的脚本--> 
+<!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript">
 $(document).ready(function(){
-	
+
 	$.ajax({
 		url:'https://15580083.qcloud.la/Admin/product/product_info',
 		method: 'GET',
@@ -130,14 +130,14 @@ $(document).ready(function(){
 		}
 	});
 
-	function getQuery(para){ 
-	var reg = new RegExp("(^|&)"+para +"=([^&]*)(&|$)"); 
-	var r = window.location.search.substr(1).match(reg); 
-	if(r!=null){ 
-		return unescape(r[2]); 
-	} 
-		return null; 
-	} 
+	function getQuery(para){
+	var reg = new RegExp("(^|&)"+para +"=([^&]*)(&|$)");
+	var r = window.location.search.substr(1).match(reg);
+	if(r!=null){
+		return unescape(r[2]);
+	}
+		return null;
+	}
 
 	$("#form-product-add").validate({
 		rules:{
@@ -171,7 +171,7 @@ $(document).ready(function(){
 		}
 	});
 });
-</script> 
+</script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>
