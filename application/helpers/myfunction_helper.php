@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 function get_exchange_rate(){
-  $fp = fopen("exchange_rate.txt", "r");
+  $fp = fopen("/usr/local/exchange_rate.txt", "r");
   if ($fp) {
     if (!feof($fp)) {
       $DATE_TODAY=(int)fgets($fp);
@@ -25,13 +25,13 @@ function get_exchange_rate(){
     $result = json_decode($content,true);
     if($result){
         if($result['error_code']=='0'){
-          $EXCHANGE_RATE=$result[result][1][exchange];
+          $EXCHANGE_RATE=$result['result'][1]['exchange'];
           $DATE_TODAY=strtotime(date("Y-m-d"));
-          $fp = fopen("exchange_rate.txt", "w");
+          $fp = fopen("/usr/local/exchange_rate.txt", "w");
           $flag=fwrite($fp,$EXCHANGE_RATE."\r\n".$DATE_TODAY."\r\n");
           if(!$flag){
             echo "写入文件失败";
-            break;
+            return false;
           }
           return $EXCHANGE_RATE;
         }else{
