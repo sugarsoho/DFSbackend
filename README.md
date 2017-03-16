@@ -11,10 +11,39 @@ DFS是一个奢侈品旅游零售商。自1960年于香港成立，其免税店�
 ## 后台简介
 业务服务器为nginx，服务器语言为PHP，操作系统为CentOS7.2，数据库为MySQL。应用程序使用Code Igniter框架设计，
 
+## 文件树结构
+
 ## 开发点滴
 1. 由于是第一次使用CI框架，以往都是使用TP框架，在前后端分离方面完成的不是特别好。CI框架支持模板引擎，在初始化函数中使用`$this-> library -> parser`即可调用`$this-> parser -> parse ('xxx.html',$data)`方法。其中'xxx.html'为模板页面，$data是需要渲染的数组。
 
 2. 为提高模型与控制器的解耦度，应当设置基类控制器和基类模型，将常用的CURD等操作写在基类里面。
+
+3. 涉及到文件读写，一定要检查是否有读写权限。服务器默认文件root拥有所有权限，而其余管理员和游客都只有读的权限。需要使用$ chmod -R 777 文件名 赋予所有账户所有权限，才能顺利读写。
+
+4. “Cannot use object of type stdClass as array in ... ”开发时遇到了这个问题。源代码如下：
+```
+// 正确：
+$product_info[$key]=$value;
+$product_info[$key]->RMB=($value->price)*$exchange_rate;
+// 错误：
+// $product_info[$key]=$value;
+// $product_info[$key]['RMB']=($value->price)*$exchange_rate;
+```
+区别在于$product_info其实是一个对象，不能再下面引用任何数组，要用"->"的方式引用。至于为什么$value会是一个对象，原因在于下面：
+```
+public function get_all_product($map=''){
+  if($map!='')
+    {
+      $data=$this -> db
+        -> where($map)
+        -> get('product');
+    }
+    else $data=$this-> db ->get('product');
+    return $data->result();
+}
+```
+CI框架下，result()得到的是一个数组对象。如果将result()换成result_array()就没问题了。
+
 
 ## 开发进度
 
@@ -26,19 +55,19 @@ DFS是一个奢侈品旅游零售商。自1960年于香港成立，其免税店�
 - [ ] 我方后台系统
   - [ ] 修改库存
   - [ ] 限购数目
-- [ ] 前端
-  - [ ] 汇率处理
-  - [ ] 商品需返回品牌及库存字段
+- [x] 前端
+  - [x] 汇率处理
+  - [x] 商品需返回品牌及库存字段
 - [ ] 数据库
-  - [ ] 商品：添加库存字段
-  - [ ] 商品：添加品牌字段
+  - [x] 商品：添加库存字段
+  - [x] 商品：添加品牌字段
   - [ ] 新增：优惠券表
 
 #### 删除
 
 
 #### 修改
-- [ ] 商家信息
+- [x] 商家信息
 
 ## 名片
 

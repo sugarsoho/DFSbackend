@@ -32,8 +32,12 @@ class Weapp extends CI_Controller {
 	    $data=$this-> product -> get_all_product($map);
 			$exchange_rate=get_exchange_rate();
 			foreach ($data as $key => $value) {
+				// 正确：
 				$product_info[$key]=$value;
-				$product_info[$key]['RMB']=$value['price']*$exchange_rate;
+			  $product_info[$key]->RMB=($value->price)*$exchange_rate;
+				// 错误：
+				// $product_info[$key]=$value;
+			  // $product_info[$key]['RMB']=($value->price)*$exchange_rate;
 			}
 	    echo json_encode($product_info);
 	}
@@ -58,35 +62,42 @@ class Weapp extends CI_Controller {
 	 */
 	public function history_order_list(){
 	    $uid=$this-> user -> getuid();
-      $userinfo=$this-> user -> get($uid);
-	    $data=$this -> order -> get_all_order($userinfo['openId'],2);
-			$exchange_rate=get_exchange_rate();
-	    foreach ($data as $key => $value) {
-	    	$order_list[$key]['order']=$value;
-	    	$order_list[$key]['product']=$this -> product -> get_product_info($value['product_id']);
-				$order_list[$key]['product']['RMB']=$order_list[$key]['product']['price']*$exchange_rate;
-	    	$order_list[$key]['shop']=$this -> shop -> get_shop_info($value['shop_id']);
-	    }
+			$map['uid']=$uid;
+			$map['order_status']=2;
+	    $data=$this -> order -> get_all_order($map);
 	    if($data){
-	    	echo json_encode($order_list);
+				$exchange_rate=get_exchange_rate();
+	    	foreach ($data as $key => $value) {
+					$order_list[$key]['order']=$value;
+					$product_info['id']=$value['product_id'];
+		    	$order_list[$key]['product']=$this -> product -> get_product_info($product_info);
+					$order_list[$key]['product']['RMB']=$order_list[$key]['product']['price']*$exchange_rate;
+					$shop_info['id']=$value['shop_id'];
+		    	$order_list[$key]['shop']=$this -> shop -> get_shop_info($shop_info);
+		    }
+					echo json_encode($order_list);
 	    }
-
 	}
 
 	/**
 	 * 返回未完成订单列表
 	 */
 	public function unfinished_order_list(){
-	  $uid=$this-> user -> getuid();
-    $userinfo=$this-> user -> get($uid);
-	  $data=$this -> order -> get_all_order($userinfo['openId'],0);
-	  foreach ($data as $key => $value) {
-	    	$order_list[$key]['order']=$value;
-	    	$order_list[$key]['product']=$this -> product -> get_product_info($value['product_id']);
-	    	$order_list[$key]['shop']=$this -> shop -> get_shop_info($value['shop_id']);
-	    }
-	  if($data){
-	   echo json_encode($order_list);
+	    $uid=$this-> user -> getuid();
+			$map['uid']=$uid;
+			$map['order_status']=0;
+	    $data=$this -> order -> get_all_order($map);
+		if($data){
+			$exchange_rate=get_exchange_rate();
+			foreach ($data as $key => $value) {
+		    	$order_list[$key]['order']=$value;
+					$product_info['id']=$value['product_id'];
+		    	$order_list[$key]['product']=$this -> product -> get_product_info($product_info);
+					$order_list[$key]['product']['RMB']=$order_list[$key]['product']['price']*$exchange_rate;
+					$shop_info['id']=$value['shop_id'];
+		    	$order_list[$key]['shop']=$this -> shop -> get_shop_info($shop_info);
+		  }
+			echo json_encode($order_list);
 	  }
 	}
 
@@ -97,6 +108,8 @@ class Weapp extends CI_Controller {
 	public function product_info(){
 	    $map['id']=$this-> input -> get('product_id');
 	    $data=$this-> product -> get_product_info($map);
+			$exchange_rate=get_exchange_rate();
+			$data['RMB']=$data['price']*$exchange_rate;
 	    $data['banner_image_urls']=explode('|', $data['banner_image_urls']);
 	    $map2['id']=$data['shop_id'];
 	    $data['shop']=$this-> shop -> get_shop_info($map2);
@@ -110,8 +123,10 @@ class Weapp extends CI_Controller {
 	public function order_info(){
 	    $order_id=$this-> input -> get('order_id');
 	    $data=$this -> order -> get_order_info($order_id);
-	    $data['product']=$this-> product -> get_product_info($data['product_id']);
-	    $data['shop']=$this-> shop -> get_shop_info($data['shop_id']);
+			$product_info['id']=$data['product_id'];
+	    $data['product']=$this-> product -> get_product_info($product_info);
+			$shop_info['id']=$data['shop_id'];
+	    $data['shop']=$this-> shop -> get_shop_info($shop_info);
 	    echo json_encode($data);
 	}
 

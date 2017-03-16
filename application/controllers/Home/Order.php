@@ -18,8 +18,7 @@ class Order extends CI_Controller {
 	public function addCart(){
 	    $data=$this-> input -> get(array('product_id','shop_id','price','number'));
 	    $uid=$this-> user -> getuid();
-        $userinfo=$this-> user -> get($uid);
-	    $data['openid']=$userinfo['openId'];
+	    $data['uid']=$uid;
 	    $data['order_id']=time();
 	    $data['start_time']=date('YmdHis');
 	    $result=$this -> order -> place_order($data);
@@ -36,16 +35,16 @@ class Order extends CI_Controller {
 	 */
 	public function confirmOrder(){
 	    $uid=$this-> user -> getuid();
-        $userinfo=$this-> user -> get($uid);
-        $map['openid']=$userinfo['openId'];
-        $map['order_status']=0;
-        $result=$this-> order -> confirm($map);
-        if($result){
-        	echo 'success';
-        }
-        else{
-        	echo 'fail';
-        }
+      $map['uid']=$uid;
+      $map['order_status']=0;
+			$order_status['order_status']=1;
+      $result=$this-> order -> changeStatus($map,$order_status);
+      if($result){
+        echo 'success';
+      }
+      else{
+      	echo 'fail';
+      }
 	}
 
 	/**
@@ -65,12 +64,26 @@ class Order extends CI_Controller {
 	/**
 	 * 清空购物车
 	 */
+	public function deleteOrder(){
+			$id=$this -> input -> get('id');
+      $map['id']=$id;
+      $result=$this-> order -> delData($map);
+	    if($result){
+	    	echo 'success';
+	    }
+	    else{
+	    	echo 'fail';
+	    }
+	}
+
+	/**
+	 * 清空购物车
+	 */
 	public function emptyCart(){
 	    $uid=$this-> user -> getuid();
-        $userinfo=$this-> user -> get($uid);
-        $map['openid']=$userinfo['openId'];
-        $map['order_status']=1;
-        $result=$this-> order -> delData($map);
+      $map['uid']=$uid;
+      $map['order_status']=0;
+      $result=$this-> order -> delData($map);
 	    if($result){
 	    	echo 'success';
 	    }

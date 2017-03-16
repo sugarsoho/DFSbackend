@@ -7,10 +7,9 @@ class Order_model extends CI_Model {
 	/**
 	 * 获取所有订单的数据
 	 */
-	public function get_all_order($openid,$order_status){
-		$where = array('openid' => $openid,'order_status' => $order_status );
+	public function get_all_order($map){
 	    $data=$this -> db
-	    		-> where($where)
+	    		-> where($map)
 	    		-> get('order');
 	    return $data->result_array();
 	}
@@ -18,9 +17,9 @@ class Order_model extends CI_Model {
 	/**
 	 * 获取订单详情
 	 */
-	public function get_order_info($id){
+	public function get_order_info($map){
 	    $data=$this -> db
-	    		-> where('id' , $id)
+	    		-> where($map)
 	    		-> get('order');
 	    $order=$data->row_array();
 	    return $order;
@@ -34,23 +33,19 @@ class Order_model extends CI_Model {
 	    return $result;
 	}
 
-	/**
-	 * 确认订单，将订单表里对应用户状态为0的订单改为1.
-	 */
-	public function confirm($map){
-		$order['order_status']=1;
-	    return $result=$this -> db -> update('order', $order,$map);
+	public function changeStatus($map,$order_status){
+		return $result=$this -> db -> update('order', $order_status,$map);
 	}
 
 	/**
 	 * 订单完成,将订单表里状态为1的订单改为2.
 	 */
-	public function finish($order_id){
+	public function finish($map){
 	    $data=$this -> db
-	    		-> where('id' , $order_id)
+	    		-> where($map)
 	    		-> get('order');
 	    $order=$data->row_array();
-	    $order['order_status']=2;
+	    $order['order_status']=3;
 	    $order['finished_time']=date('YmdHis');
 	    return $result=$this -> db -> replace('order', $order);
 	}
