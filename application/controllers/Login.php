@@ -10,8 +10,10 @@ class Login extends CI_Controller {
         if ($result['code'] === 0) {
         // 微信用户信息：`$result['data']['userInfo']`
         	$this -> load -> model('user_model', 'user');
-        	$uid=$this -> user -> add_user($result);
-		} 
+          $this -> load -> model('coupon_model', 'coupon');
+        	$uid['uid']=$this -> user -> add_user($result);
+          $coupon=$this -> coupon -> addData($uid);
+		    }
     }
 
     public function test(){

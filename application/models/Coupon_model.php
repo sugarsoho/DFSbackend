@@ -5,32 +5,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Coupon_model extends CI_Model {
 
 
-
 	/**
-	 * 获取所有优惠券的数据
+	 * [get_info description]
+	 * @param  [array] $map   [查询字段]
+	 * @param  [string] $field [返回字段]
+	 * @return [array]        []
 	 */
-	public function get_all_coupon($map=''){
-		if($map!='')
-	    {
-	    	$data=$this -> db
-	    		-> where($map)
-	    		-> get('coupon');
-	    }
-	    else $data=$this-> db ->get('coupon');
-	    return $data->result();
+	public function getData($map='',$field=''){
+		if ($field=='') {
+			//当返回字段为空，查询字段不为空时
+			if ($map!='') {
+				$data=$this -> db
+							-> where($map)
+							-> get('coupon');
+			}
+			//当当返回字段为空，查询字段为空时
+			else{
+				$data=$this -> db
+							-> get('coupon');
+			}
+		}else{
+			//当返回字段不为空，查询字段不为空时
+			if ($map!='') {
+				$data=$this -> db
+							-> select($field)
+							-> where($map)
+							-> get('coupon');
+			}
+			//当返回字段不为空，查询字段为空时
+			else{
+				$data=$this -> db
+							-> select($field)
+							-> get('coupon');
+			}
+		}
+		return $data->result_array();
 	}
 
-
-	/**
-	 * 获取优惠券信息
-	 */
-	public function get_coupon_info($map){
-	     $data=$this -> db
-	    		-> where($map)
-	    		-> get('coupon');
-	    $coupon=$data->row_array();
-	    return $coupon;
-	}
 
 	/**
 	 * 添加数据
