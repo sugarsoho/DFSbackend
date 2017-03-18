@@ -47,7 +47,7 @@ class Coupon_model extends CI_Model {
 	 * 添加数据
 	 */
 	public function addData($data){
-		if ($exist=getData($data)) {
+		if (empty(getData($data))) {
 			return $result=$this -> db -> insert('coupon',$data);
 		}
 	}
