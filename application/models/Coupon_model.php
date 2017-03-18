@@ -6,7 +6,7 @@ class Coupon_model extends CI_Model {
 
 
 	/**
-	 * [get_info description]
+	 * [getData description]
 	 * @param  [array] $map   [查询字段]
 	 * @param  [string] $field [返回字段]
 	 * @return [array]        []
@@ -47,7 +47,7 @@ class Coupon_model extends CI_Model {
 	 * 添加数据
 	 */
 	public function addData($data){
-		if (empty(getData($data))) {
+		if (empty(self::getData($data))) {
 			return $result=$this -> db -> insert('coupon',$data);
 		}
 	}

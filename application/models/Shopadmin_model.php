@@ -6,7 +6,7 @@ class Shopadmin_model extends CI_Model {
 
 
 	/**
-	 * [get_info description]
+	 * [getData description]
 	 * @param  [array] $map   [查询字段]
 	 * @param  [string] $field [返回字段]
 	 * @return [array]        []
