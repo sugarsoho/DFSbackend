@@ -5,36 +5,58 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Order_model extends CI_Model {
 
 	/**
-	 * 获取所有订单的数据
+	 * [get_info description]
+	 * @param  [array] $map   [查询字段]
+	 * @param  [string] $field [返回字段]
+	 * @return [array]        []
 	 */
-	public function get_all_order($map){
-	    $data=$this -> db
-	    		-> where($map)
-	    		-> get('order');
-	    return $data->result_array();
+	public function getData($map='',$field=''){
+		if ($field=='') {
+			//当返回字段为空，查询字段不为空时
+			if ($map!='') {
+				$data=$this -> db
+							-> where($map)
+							-> get('order');
+			}
+			//当当返回字段为空，查询字段为空时
+			else{
+				$data=$this -> db
+							-> get('order');
+			}
+		}else{
+			//当返回字段不为空，查询字段不为空时
+			if ($map!='') {
+				$data=$this -> db
+							-> select($field)
+							-> where($map)
+							-> get('order');
+			}
+			//当返回字段不为空，查询字段为空时
+			else{
+				$data=$this -> db
+							-> select($field)
+							-> get('order');
+			}
+		}
+		return $data->result_array();
 	}
 
 	/**
-	 * 获取订单详情
+	 * 添加数据
 	 */
-	public function get_order_info($map){
-	    $data=$this -> db
-	    		-> where($map)
-	    		-> get('order');
-	    $order=$data->row_array();
-	    return $order;
+	public function addData($data){
+	    return $result=$this-> db -> insert('order', $data);
+	}
+
+	public function editMultiData($map,$data){
+		return $result=$this -> db -> update('order', $data,$map);
 	}
 
 	/**
-	 * 下单
+	 * 编辑数据,$data数组中必须带有主键
 	 */
-	public function place_order($data){
-	    $result=$this-> db -> insert('order', $data);
-	    return $result;
-	}
-
-	public function changeStatus($map,$order_status){
-		return $result=$this -> db -> update('order', $order_status,$map);
+	public function editData($data){
+	    return $result=$this -> db ->replace('order',$data);
 	}
 
 	/**
@@ -55,7 +77,6 @@ class Order_model extends CI_Model {
 	 */
 	public function delData($map){
 	    return $result=$this -> db ->delete('order',$map);
-	    $this->display();
 	}
 
 

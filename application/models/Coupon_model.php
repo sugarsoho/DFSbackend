@@ -62,7 +62,6 @@ class Coupon_model extends CI_Model {
 	 */
 	public function delData($map){
 	    return $result=$this -> db ->delete('coupon',$map);
-	    $this->display();
 	}
 
 

@@ -94,7 +94,7 @@ class Index extends Admin_Controller {
 	 * 返回商品列表
 	 */
 	public function admin_list(){
-	    $data=$this-> admin -> get_all_admin();
+	    $data=$this-> admin -> getData();
 	    echo json_encode($data);
 	}
 
@@ -103,7 +103,7 @@ class Index extends Admin_Controller {
 	 */
 	public function admin_info(){
 		$map['id']=$this -> input -> get('id');
-	    $data=$this-> admin ->get_admin_info($map);
+	    $data=$this-> admin ->getData($map);
 	    echo json_encode($data);
 	}
 
@@ -124,7 +124,7 @@ class Index extends Admin_Controller {
 	    $this-> load ->view('login.html');
 	}
 
-	
+
 	/**
 	 * 登录页面
 	 */
@@ -145,7 +145,7 @@ class Index extends Admin_Controller {
 	public function adminedit(){
 	    $this-> load ->view('adminedit.html');
 	}
-	
+
 
 	/**
 	 * 登录页面

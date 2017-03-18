@@ -9,6 +9,7 @@ class Order extends CI_Controller {
 		parent::__construct();
 		$this -> load -> model('order_model', 'order');
 		$this -> load -> model('user_model', 'user');
+		$this -> load -> model('product_model', 'product');
 		$this -> load -> helper('url');
 	}
 
@@ -17,11 +18,18 @@ class Order extends CI_Controller {
 	 */
 	public function addCart(){
 	    $data=$this-> input -> get(array('product_id','shop_id','price','number'));
+			$map['id']=$data['product_id'];
+			$field='stock,buying_limitation';
+			//获取库存及限购数目
+			$inventory=$this-> product -> getData($map,$field);
+			//检查用户购买数目是否超过库存及限购数目
+			if($data['number']>$inventory['stock']) $data['number']=$inventory['stock'];
+			if($data['number']>$inventory['buying_limitation']) $data['number']=$inventory['buying_limitation'];
 	    $uid=$this-> user -> getuid();
 	    $data['uid']=$uid;
 	    $data['order_id']=time();
 	    $data['start_time']=date('YmdHis');
-	    $result=$this -> order -> place_order($data);
+	    $result=$this -> order -> addData($data);
 	    if($result){
 	    	echo 'success';
 	    }
@@ -38,7 +46,7 @@ class Order extends CI_Controller {
       $map['uid']=$uid;
       $map['order_status']=0;
 			$order_status['order_status']=1;
-      $result=$this-> order -> changeStatus($map,$order_status);
+      $result=$this-> order -> editMultiData($map,$order_status);
       if($result){
         echo 'success';
       }

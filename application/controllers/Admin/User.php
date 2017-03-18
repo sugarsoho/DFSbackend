@@ -22,7 +22,7 @@ class User extends Admin_Controller {
 	 * 返回商品列表
 	 */
 	public function user_list(){
-	    $data=$this-> user -> get_all_user();
+	    $data=$this-> user -> getData();
 	    echo json_encode($data);
 	}
 

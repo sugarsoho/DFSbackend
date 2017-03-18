@@ -94,7 +94,7 @@ class Product extends Admin_Controller {
 	 * 返回商品列表
 	 */
 	public function product_list(){
-	    $data=$this-> product -> get_all_product();
+	    $data=$this-> product -> getData();
 	    echo json_encode($data);
 	}
 
@@ -103,7 +103,7 @@ class Product extends Admin_Controller {
 	 */
 	public function product_info(){
 		$map['id']=$this -> input -> get('id');
-	    $data=$this-> product ->get_product_info($map);
+	    $data=$this-> product ->getData($map);
 	    echo json_encode($data);
 	}
 
@@ -129,7 +129,7 @@ class Product extends Admin_Controller {
 	 */
 	public function productedit(){
 		$map['id']=$this-> input ->get('id');
-		$product_info=$this -> product -> get_product_info($map);
+		$product_info=$this -> product -> getData($map);
 	    $this-> parser ->parse('productedit.html',$product_info);
 	}
 

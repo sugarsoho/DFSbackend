@@ -65,7 +65,7 @@ class Shop extends Admin_Controller {
 	 * 返回商铺列表
 	 */
 	public function shop_list(){
-	    $data=$this-> shop -> get_all_shop();
+	    $data=$this-> shop -> getData();
 	    echo json_encode($data);
 	}
 
@@ -74,7 +74,7 @@ class Shop extends Admin_Controller {
 	 */
 	public function shop_info(){
 		$map['id']=$this -> input -> get('id');
-	    $data=$this-> shop ->get_shop_info($map);
+	    $data=$this-> shop ->getData($map);
 	    echo json_encode($data);
 	}
 
@@ -98,7 +98,7 @@ class Shop extends Admin_Controller {
 	 */
 	public function shopedit(){
 		$map['id']=$this -> input -> get('id');
-		$shop_info=$this -> shop -> get_shop_info($map);
+		$shop_info=$this -> shop -> getData($map);
 	    $this-> parser ->parse('shopedit.html',$shop_info);
 	}
 

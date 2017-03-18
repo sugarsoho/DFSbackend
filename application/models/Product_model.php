@@ -5,28 +5,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Product_model extends CI_Model {
 
 	/**
-	 * 获取所有商品的数据
+	 * [get_info description]
+	 * @param  [array] $map   [查询字段]
+	 * @param  [string] $field [返回字段]
+	 * @return [array]        []
 	 */
-	public function get_all_product($map=''){
-		if($map!='')
-	    {
-	    	$data=$this -> db
-	    		-> where($map)
-	    		-> get('product');
-	    }
-	    else $data=$this-> db ->get('product');
-	    return $data->result();
-	}
-
-	/**
-	 * 获取单个商品详情
-	 */
-	public function get_product_info($map){
-	    $data=$this -> db
-	    		-> where($map)
-	    		-> get('product');
-	    $product=$data->row_array();
-	    return $product;
+	public function getData($map='',$field=''){
+		if ($field=='') {
+			//当返回字段为空，查询字段不为空时
+			if ($map!='') {
+				$data=$this -> db
+							-> where($map)
+							-> get('product');
+			}
+			//当当返回字段为空，查询字段为空时
+			else{
+				$data=$this -> db
+							-> get('product');
+			}
+		}else{
+			//当返回字段不为空，查询字段不为空时
+			if ($map!='') {
+				$data=$this -> db
+							-> select($field)
+							-> where($map)
+							-> get('product');
+			}
+			//当返回字段不为空，查询字段为空时
+			else{
+				$data=$this -> db
+							-> select($field)
+							-> get('product');
+			}
+		}
+		return $data->result_array();
 	}
 
 	/**
@@ -48,7 +60,6 @@ class Product_model extends CI_Model {
 	 */
 	public function delData($map){
 	    return $result=$this -> db ->delete('product',$map);
-	    $this->display();
 	}
 
 }

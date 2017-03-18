@@ -15,28 +15,40 @@ class Admin_model extends CI_Model {
 	}
 
 	/**
-	 * 获取所有商品的数据
+	 * [get_info description]
+	 * @param  [array] $map   [查询字段]
+	 * @param  [string] $field [返回字段]
+	 * @return [array]        []
 	 */
-	public function get_all_admin($map=''){
-		if($map!='')
-	    {
-	    	$data=$this -> db
-	    		-> where($map)
-	    		-> get('admin');
-	    }
-	    else $data=$this-> db ->get('admin');
-	    return $data->result();
-	}
-
-	/**
-	 * 获取单个商品详情
-	 */
-	public function get_admin_info($map){
-	    $data=$this -> db
-	    		-> where($map)
-	    		-> get('admin');
-	    $admin=$data->row_array();
-	    return $admin;
+	public function getData($map='',$field=''){
+		if ($field=='') {
+			//当返回字段为空，查询字段不为空时
+			if ($map!='') {
+				$data=$this -> db
+							-> where($map)
+							-> get('admin');
+			}
+			//当当返回字段为空，查询字段为空时
+			else{
+				$data=$this -> db
+							-> get('admin');
+			}
+		}else{
+			//当返回字段不为空，查询字段不为空时
+			if ($map!='') {
+				$data=$this -> db
+							-> select($field)
+							-> where($map)
+							-> get('admin');
+			}
+			//当返回字段不为空，查询字段为空时
+			else{
+				$data=$this -> db
+							-> select($field)
+							-> get('admin');
+			}
+		}
+		return $data->result_array();
 	}
 
 	/**
@@ -58,7 +70,6 @@ class Admin_model extends CI_Model {
 	 */
 	public function delData($map){
 	    return $result=$this -> db ->delete('admin',$map);
-	    $this->display();
 	}
 
 }

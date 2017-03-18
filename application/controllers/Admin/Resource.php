@@ -43,14 +43,14 @@ class Resource extends Admin_Controller {
 	    		echo 'fail';
 	    	}
 	    }
-	    
+
 	}
 
 	/**
 	 * 获取资源列表
 	 */
 	public function picture_list(){
-	    $data=$this-> resource -> get_all_picture();
+	    $data=$this-> resource -> getData();
 	    echo json_encode($data);
 	}
 
