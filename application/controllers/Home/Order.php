@@ -19,12 +19,20 @@ class Order extends CI_Controller {
 	public function addCart(){
 	    $data=$this-> input -> get(array('product_id','shop_id','price','number'));
 			$map['id']=$data['product_id'];
-			$field='stock,buying_limitation';
 			//获取库存及限购数目
-			$inventory=$this-> product -> getData($map,$field);
+			$product_info=$this-> product -> getData($map);
+			//库存为0时，拒绝添加购物车请求
+			if ($product_info['stock']==0) {
+				error_log(date('YmdHis')."-[".$product_info['name']."]".'inventory_empty'."\n",3,"/tmp/inventory-empty.log");
+				exit ('该商品库存已空');
+			}
 			//检查用户购买数目是否超过库存及限购数目
-			if($data['number']>$inventory['stock']) $data['number']=$inventory['stock'];
-			if($data['number']>$inventory['buying_limitation']) $data['number']=$inventory['buying_limitation'];
+			if($data['number']>$product_info['stock']) $data['number']=$product_info['stock'];
+			if($data['number']>$product_info['buying_limitation']) $data['number']=$product_info['buying_limitation'];
+			//修改商品库存
+			$product_info['stock']-=$data['number'];
+			$change_inventory=$this -> product -> editData($product_info);
+			//添加订单信息到订单表
 	    $uid=$this-> user -> getuid();
 	    $data['uid']=$uid;
 	    $data['order_id']=time();
@@ -74,7 +82,13 @@ class Order extends CI_Controller {
 	 */
 	public function deleteOrder(){
 			$id=$this -> input -> get('id');
-      $map['id']=$id;
+      $map_order['id']=$id;
+			//先恢复库存
+			$order_info=$this -> order -> getData($map_order);
+			$map_product['id']=$order_info['product_id'];
+			$product_info=$this -> product -> getData($map_product);
+			$product_info['stock']+=$order_info['number'];
+			$change_inventory=$this -> product -> editData($product_info);
       $result=$this-> order -> delData($map);
 	    if($result){
 	    	echo 'success';
@@ -91,6 +105,8 @@ class Order extends CI_Controller {
 	    $uid=$this-> user -> getuid();
       $map['uid']=$uid;
       $map['order_status']=0;
+			$order_info=$this -> order -> getData($map_order);
+
       $result=$this-> order -> delData($map);
 	    if($result){
 	    	echo 'success';
