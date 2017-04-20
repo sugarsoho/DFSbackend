@@ -21,7 +21,7 @@ class Weapp extends CI_Controller {
 	 * 获取目录列表
 	 */
 	public function class_list(){
-	    $data=$this -> class ->getData();
+	    $data=$this -> class ->getData('class');
 	    echo json_encode($data);
 	}
 

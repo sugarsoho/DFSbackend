@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Promotion_model extends CI_Model {
+class Promotion_model extends MY_Model {
 
 
 

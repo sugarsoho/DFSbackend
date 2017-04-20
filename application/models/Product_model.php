@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Product_model extends CI_Model {
+class Product_model extends MY_Model {
 
 	/**
 	 * 删除数据

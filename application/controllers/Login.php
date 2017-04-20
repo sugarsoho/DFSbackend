@@ -12,7 +12,7 @@ class Login extends CI_Controller {
         	$this -> load -> model('user_model', 'user');
           $this -> load -> model('coupon_model', 'coupon');
         	$uid['uid']=$this -> user -> add_user($result);
-          $coupon=$this -> coupon -> addData($uid);
+          $coupon=$this -> coupon -> addData('coupon', $uid);
 		    }
     }
 

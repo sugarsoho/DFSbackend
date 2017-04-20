@@ -1,7 +1,7 @@
 <?php
 use \QCloud_WeApp_SDK\Auth\LoginService as LoginService;
 
-class User_model extends CI_Model {
+class User_model extends MY_Model {
 
 
 

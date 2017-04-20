@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Shopadmin_model extends CI_Model {
+class Shopadmin_model extends MY_Model {
 
 	public function check($map){
 		if ($map!='') {
