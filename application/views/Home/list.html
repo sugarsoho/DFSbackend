@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/Public/css/style-dfs-business.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="http://cdn.bootcss.com/vue/2.1.10/vue.min.js"></script>
+    <!-- <script src="/Public/js/vue.js" charset="utf-8"></script> -->
+    <title>List</title>
+  </head>
+  <body>
+    <div id="app" class="list-container">
+      <nav class="nav-bar">
+        <span @click="showOrderList" class="nav-item active unfinished">Unfinished</span>
+        <span @click="showFinishedOrderList" class="nav-item finished">Finished</span>
+      </nav>
+      <div class="takeplace-20" style="height: 2rem"></div>
+      <div class="list-item-content">
+        <!-- 用于循环 -->
+        <section class="list-item" v-for="item in indexList" v-show="item.order[0].pickedup == showStatus">
+          <div class="top-content">
+            <div class="title">User#{{item.uid}}</div>
+            <div class="menu-content">
+              <div @click="routerGoOrder(item.uid)" class="show-more">More</div>
+              <div class="menu-item" v-for="order in item.order">
+                <span class="left-part">{{order.product.name}}</span>
+                <span class="right-part">*{{order.number}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="options-content">
+            <span class="options-item picked-up-check" :class="item.order[0].pickedup == 1 ? 'active' : ''">
+              <span class="check-icon"></span>
+              Picked Up
+            </span>
+            <span class="options-item coupon-check" :class="item.coupon.coupon_status == 1 ? 'active' : ''">
+              <span class="check-icon"></span>
+              Coupon
+            </span>
+            <span class="options-item bagged-check" :class="item.order[0].bagged == 1 ? 'active' : ''">
+              <span class="check-icon"></span>
+              Bagged
+            </span>
+          </div>
+        </section>
+      </div>
+      <div class="takeplace-20" style="height: 2rem"></div>
+      <footer class="tab-bar">
+        <span @click="routerGoList" class="tab-item active">List</span>
+        <span @click="routerGoInventory" class="tab-item">Inventory</span>
+        <span @click="routerGoFAQs" class="tab-item">FAQs</span>
+      </footer>
+    </div>
+  </body>
+  <script src="/Public/js/jquery-2.1.1.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  var domain = 'https://15580083.qcloud.la/';
+  var vm = new Vue({
+    el: '#app',
+    data: function() {
+      return {
+        orderList: [],
+        uid: '',
+        indexList: [],
+        finishedOrderList: [],
+        showStatus: 0,
+      }
+    },
+    mounted: function() {
+      this.getOrderList()
+    },
+    methods: {
+      getOrderList() {
+        var _this = this
+        axios.get(domain + 'Home/shop/order_list')
+        // axios.get('../mock/mock(4).json')
+          .then(function (response) {
+            console.log(response.data)
+            _this.orderList = response.data
+            _this.indexList = _this.orderList
+            // _this.uid = response.data.uid
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+      showOrderList() {
+        $('.nav-item').removeClass('active')
+        $('.unfinished').addClass('active')
+        this.showStatus = 0
+      },
+      showFinishedOrderList() {
+        $('.nav-item').removeClass('active')
+        $('.finished').addClass('active')
+        this.showStatus = 1
+      },
+      pickedUpEvent() {
+
+      },
+      couponEvent() {
+
+      },
+      baggedEvent() {
+
+      },
+      routerGoOrder(uid) {
+        window.location.href = 'order.html?uid=' + uid
+      },
+      routerGoList() {
+        window.location.href = 'list.html'
+      },
+      routerGoInventory() {
+        window.location.href = 'inventory.html'
+      },
+      routerGoFAQs() {
+        window.location.href = 'FAQs.html'
+      },
+    }
+  })
+  </script>
+</html>

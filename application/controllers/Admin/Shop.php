@@ -98,7 +98,7 @@ class Shop extends Admin_Controller {
 	 */
 	public function shopedit(){
 		$map['id']=$this -> input -> get('id');
-		$shop_info=$this -> shop -> getData($map);
+		$shop_info=$this -> shop -> getInfo($map);
 	    $this-> parser ->parse('shopedit.html',$shop_info);
 	}
 

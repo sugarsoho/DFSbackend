@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/Public/css/style-dfs-business.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="http://cdn.bootcss.com/vue/2.1.10/vue.min.js"></script>
+    <title>Login</title>
+  </head>
+  <body>
+    <div id="app" class="login-container">
+      <div class="top-content">
+        <img class="dfs-avatar" src="/Public/img/DFS_LOGO_LRG.png" alt="">
+      </div>
+      <div class="login-content">
+        <div class="username-content">
+          <img class="input-logo" src="/Public/img/user.png" alt="">
+          <input type="text" class="username" placeholder="Username" v-model="usernameInput">
+        </div>
+        <div class="password-content">
+          <img class="input-logo" src="/Public/img/lock.png" alt="">
+          <input type="password" class="password" placeholder="password" v-model="passwordInput">
+        </div>
+        <div @click="login" class="center-btn">Login</div>
+      </div>
+    </div>
+  </body>
+  <script src="/Public/js/jquery-2.1.1.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  var domain = 'https://15580083.qcloud.la/';
+  var vm = new Vue({
+    el: '#app',
+    data: function() {
+      return {
+        usernameInput: '',
+        passwordInput: '',
+      }
+    },
+    mounted: function() {
+    },
+    methods: {
+      login() {
+        var _this = this
+        axios.get(domain + 'Home/shop/login?shopadmin_account=' + _this.usernameInput + '&shopadmin_password=' + _this.passwordInput)
+          .then(function (response) {
+            console.log(response);
+            if (response.data == 0) {
+              window.location.href = 'list.html'
+            } else {
+              alert(response.data)
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    }
+  })
+  </script>
+</html>

@@ -10,7 +10,8 @@ class Order_model extends CI_Model {
 	 * @param  [string] $field [返回字段]
 	 * @return [array]        []
 	 */
-	public function getData($map='',$field=''){
+	 public function getData($map='',$field='',$order=''){
+ 		if($order!='') $this->db->order_by($order);
 		if ($field=='') {
 			//当返回字段为空，查询字段不为空时
 			if ($map!='') {
@@ -41,6 +42,18 @@ class Order_model extends CI_Model {
 		return $data->result_array();
 	}
 
+	public function likeSearch($string){
+		$this->db->like('phone', $string);
+		$this->db->or_like('order_id', $string);
+		$data=$this->db->get('order');
+		return $data->result_array();
+	}
+
+	public function getInfo($map){
+		$data=$this -> db -> where($map) -> get('order');
+		return $data -> row_array();
+	}
+
 	/**
 	 * 添加数据
 	 */
@@ -59,6 +72,24 @@ class Order_model extends CI_Model {
 	    return $result=$this -> db ->replace('order',$data);
 	}
 
+	public function count($map){
+		$this->db->where($map);
+		$this->db->from('order');
+		return $this->db->count_all_results();
+	}
+
+	public function countAll(){
+		return $this -> db -> count_all('order');
+	}
+
+	public function page($map, $order_sort, $currentPage){
+		$currentPage = ($currentPage - 1) * 20;
+		$this -> db -> limit($currentPage, 20);
+		$this -> db	-> where($map);
+		$data=$this -> db	-> get('order');
+		return $data->result_array();
+	}
+
 	/**
 	 * 订单完成,将订单表里状态为1的订单改为2.
 	 */
@@ -67,7 +98,7 @@ class Order_model extends CI_Model {
 	    		-> where($map)
 	    		-> get('order');
 	    $order=$data->row_array();
-	    $order['order_status']=3;
+	    $order['order_status']=2;
 	    $order['finished_time']=date('YmdHis');
 	    return $result=$this -> db -> replace('order', $order);
 	}

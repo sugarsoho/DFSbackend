@@ -41,6 +41,11 @@ class Class_model extends CI_Model {
 		return $data->result_array();
 	}
 
+	public function getInfo($map){
+		$data=$this -> db -> where($map) -> get('class');
+		return $data -> row_array();
+	}
+
 	/**
 	 * 添加数据
 	 */
@@ -59,7 +64,8 @@ class Class_model extends CI_Model {
 	 * 删除数据
 	 */
 	public function delData($map){
-	    return $result=$this -> db ->delete('class',$map);
+		$data['status'] = 0;
+	  return $result=$this -> db ->update('class', $data ,$map);
 	}
 
 

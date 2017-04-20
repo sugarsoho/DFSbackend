@@ -26,9 +26,9 @@ class Index extends Admin_Controller {
 	 */
 	public function check_login(){
 		$data=$this -> input -> post(array('admin_account','admin_password'));
-		$result=$this -> admin -> login($data);
+		$result['admin_info']=$this -> admin -> login($data);
 		if($result){
-			$this -> session -> set_userdata($result);
+			$this->session->set_tempdata($result, NULL, 7200);
 		}
 		redirect('https://15580083.qcloud.la/Admin/index');
 	}
@@ -37,11 +37,11 @@ class Index extends Admin_Controller {
 	 * 登录页面
 	 */
 	public function index(){
-		$admin_info=$this->session->userdata('admin_account','admin_password','admin_name','admin_job');
-		if(!$admin_info){
+		if(empty($_SESSION['admin_info'])){
 			redirect('https://15580083.qcloud.la/Admin/index/login');
 		}
-	    $this-> parser ->parse('index.html',$admin_info);
+		$admin_info=$_SESSION['admin_info'];
+	  $this-> parser ->parse('index.html',$admin_info);
 	}
 
 	/**

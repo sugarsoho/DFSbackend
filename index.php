@@ -323,7 +323,7 @@ require_once './install_qcloud_sdk.php';
  * LOAD and SETUP `Qiniu SDK CONFIGURATION`
  * --------------------------------------------------------------------
  */
-require './vendor/php-sdk-7.1.3/autoload.php';
+require_once './vendor/bin/php-sdk-7.1.3/autoload.php';
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

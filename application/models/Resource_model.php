@@ -52,5 +52,10 @@ class Resource_model extends CI_Model {
 		return $data->result_array();
 	}
 
+	public function getInfo($map){
+		$data=$this -> db -> where($map) -> get('resource');
+		return $data -> row_array();
+	}
+
 
 }

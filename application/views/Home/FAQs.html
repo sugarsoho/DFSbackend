@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/Public/css/style-dfs-business.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="http://cdn.bootcss.com/vue/2.1.10/vue.min.js"></script>
+    <title>FAQs</title>
+  </head>
+  <body>
+    <div id="app" class="faq-container">
+      <section class="banner-content">
+        <img class="logo" src="/Public/img/DFS_LOGO_LRG.png" alt="">
+        <img class="logout-icon" src="/Public/img/power-circular-button.png" alt="" @click="routerLogout">
+      </section>
+      <section class="main-content">
+        <div class="faq-item">
+          <p class="title" @click="showDesc">1.Lorem ipsum dolor sit amet?</p>
+          <p class="desc">
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+          </p>
+        </div>
+        <div class="faq-item">
+          <p class="title" @click="showDesc">2.Lorem ipsum dolor sit amet?</p>
+          <p class="desc">
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+          </p>
+        </div>
+        <div class="faq-item">
+          <p class="title" @click="showDesc">3.king of books.Nor the?</p>
+          <p class="desc">
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+          </p>
+        </div>
+        <div class="faq-item">
+          <p class="title" @click="showDesc">4.o end to the making of books.Nor ther?</p>
+          <p class="desc">
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+          </p>
+        </div>
+        <div class="faq-item">
+          <p class="title" @click="showDesc">5.ere is no end to the making of ?</p>
+          <p class="desc">
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+            There is no end to the making of books.Nor there..
+          </p>
+        </div>
+      </section>
+      <div class="takeplace" style="height: 2rem"></div>
+      <footer class="tab-bar">
+        <span @click="routerGoList" class="tab-item">List</span>
+        <span @click="routerGoInventory" class="tab-item">Inventory</span>
+        <span @click="routerGoFAQs" class="tab-item active">FAQs</span>
+      </footer>
+    </div>
+  </body>
+  <script src="/Public/js/jquery-2.1.1.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  var domain = 'https://15580083.qcloud.la/';
+  var vm = new Vue({
+    el: '#app',
+    data: function() {
+      return {
+      }
+    },
+    mounted: function() {
+    },
+    methods: {
+      showDesc() {
+        $('.desc').addClass('active')
+      },
+      getSignIncomeList() {
+        var _this = this
+        axios.post('http://s.chengxinxitong.com/app1.0.0/getSignRevenueListData.action', params)
+          .then(function (response) {
+            console.log(response.data.list);
+            _this.showList = response.data.list
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+      routerGoList() {
+        window.location.href = 'list.html'
+      },
+      routerGoInventory() {
+        window.location.href = 'inventory.html'
+      },
+      routerGoFAQs() {
+        window.location.href = 'FAQs.html'
+      },
+      routerLogout() {
+        window.location.href = domain+'Home/shop/logout'
+      },
+    }
+  })
+  </script>
+</html>

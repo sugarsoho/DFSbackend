@@ -12,7 +12,6 @@ class Product extends Admin_Controller {
 							'desc',
 							'stock',
 							'buying_limitation',
-							'detail',
 							'class_name',
 							'enter_banner',
 							'order_banner',
@@ -23,6 +22,7 @@ class Product extends Admin_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this -> load -> model('product_model', 'product');
+		$this -> load -> model('order_model', 'order');
 		$this -> load -> helper('url');
 
 	}
@@ -34,13 +34,14 @@ class Product extends Admin_Controller {
 	public function addProduct(){
 		$product_info = array(
 								'name',
+								'name_en',
 								'brand_name',
 								'price',
 								'worth',
+								'SKU_ID',
 								'desc',
 								'stock',
 								'buying_limitation',
-								'detail',
 								'class_name',
 								'enter_banner',
 								'order_banner',
@@ -60,13 +61,14 @@ class Product extends Admin_Controller {
 	public function editProduct(){
 		$product_info = array('id',
 								'name',
+								'name_en',
 								'brand_name',
 								'price',
 								'worth',
+								'SKU_ID',
 								'desc',
 								'stock',
 								'buying_limitation',
-								'detail',
 								'class_name',
 								'enter_banner',
 								'order_banner',
@@ -86,6 +88,9 @@ class Product extends Admin_Controller {
 	public function delProduct(){
 	    $map['id']=$this->input->get('id');
 	    $result=$this-> product -> delData($map);
+			$map1['product_id'] = $map['id'];
+			$map1['order_status'] = 0;
+			$result1 = $this -> order -> delData($map1);
 	}
 
 
@@ -94,7 +99,8 @@ class Product extends Admin_Controller {
 	 * 返回商品列表
 	 */
 	public function product_list(){
-	    $data=$this-> product -> getData();
+		$map['status'] = 1;
+	    $data=$this-> product -> getData($map);
 	    echo json_encode($data);
 	}
 
@@ -129,16 +135,17 @@ class Product extends Admin_Controller {
 	 */
 	public function productedit(){
 		$map['id']=$this-> input ->get('id');
-		$product_info=$this -> product -> getData($map);
-	    $this-> parser ->parse('productedit.html',$product_info);
+		$product_info=$this -> product -> getInfo($map);
+	  $this-> parser ->parse('productedit.html',$product_info);
 	}
 
 	/**
 	 * 测试接口
 	 */
 	public function test(){
-        /*$uid=$this-> user -> getuid();
-        $userinfo=$this-> user -> get($uid);*/
+		$map['id']=$this-> input ->get('id');
+		$product_info=$this -> product -> getData($map);
+		echo json_encode($product_info);
 	}
 
 

@@ -11,7 +11,7 @@ class Coupon_model extends CI_Model {
 	 * @param  [string] $field [返回字段]
 	 * @return [array]        []
 	 */
-	public function getData($map='',$field=''){
+	public function getData($map='',$field='',$if_array=true){
 		if ($field=='') {
 			//当返回字段为空，查询字段不为空时
 			if ($map!='') {
@@ -39,7 +39,13 @@ class Coupon_model extends CI_Model {
 							-> get('coupon');
 			}
 		}
-		return $data->result_array();
+		if($if_array)	return $data->result_array();
+		else return $data->result();
+	}
+
+	public function getInfo($map){
+		$data=$this -> db -> where($map) -> get('coupon');
+		return $data -> row_array();
 	}
 
 

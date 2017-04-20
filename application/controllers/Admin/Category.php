@@ -53,7 +53,8 @@ class Category extends Admin_Controller {
 	 * 返回商铺列表
 	 */
 	public function class_list(){
-	    $data=$this-> class -> getData();
+		$map['status'] = 1;
+	    $data=$this-> class -> getData($map);
 	    echo json_encode($data);
 	}
 
@@ -86,7 +87,7 @@ class Category extends Admin_Controller {
 	 */
 	public function classedit(){
 		$map['class_id']=$this-> input -> get('class_id');
-		$class_info=$this -> class -> getData($map);
+		$class_info=$this -> class -> getInfo($map);
 	    $this-> parser ->parse('classedit.html',$class_info);
 	}
 

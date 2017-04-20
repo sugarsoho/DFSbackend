@@ -14,6 +14,11 @@ class Admin_model extends CI_Model {
 		}
 	}
 
+	public function getInfo($map){
+		$data=$this -> db -> where($map) -> get('admin');
+		return $data -> row_array();
+	}
+
 	/**
 	 * [getData description]
 	 * @param  [array] $map   [查询字段]
